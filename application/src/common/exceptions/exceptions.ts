@@ -1,4 +1,4 @@
-const HttpErrorCodes = {
+export const HttpErrorCodes = {
   HTTP_OK: 200,
   HTTP_CREATED: 201,
   ERROR_BAD_REQUEST: 400,
@@ -9,43 +9,44 @@ const HttpErrorCodes = {
   ERROR_SERVER_ERROR: 500, 
 };
 
-class DatabaseException extends Error {
+export class DatabaseException extends Error {
   constructor(message: string) {
     super(message);
   }
 }
 
-class NotAuthorizedException extends Error {
+export class NotAuthorizedException extends Error {
   constructor(message: string) {
     super(message);
   }
 }
 
-class ElementNotFoundException extends Error {
+export class ElementNotFoundException extends Error {
   constructor(message: string) {
     super(message);
   }
 }
 
-class ElementInvalidException extends Error {
+export class ElementInvalidException extends Error {
+ constructor(message: string) {
+   super(message);
+ }
+}
+
+
+export class InvalidCredentials extends Error {
+ constructor(message: string) {
+   super(message);
+ }
+}
+
+export class ElementAlreadyExists extends Error {
   constructor(message: string) {
     super(message);
   }
 }
 
-class InvalidCredentials extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-class ElementAlreadyExists extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-const evalException = (err: Error, res: any) => {
+export const evalException = (err: Error, res: any) => {
   if (err instanceof ElementInvalidException) {
     return res.status(HttpErrorCodes.ERROR_BAD_REQUEST).send(err.message);
   } else if (err instanceof InvalidCredentials) {
@@ -61,15 +62,4 @@ const evalException = (err: Error, res: any) => {
   } else {
     return res.status(HttpErrorCodes.ERROR_SERVER_ERROR).send(err.message);
   }
-};
-
-module.exports = {
-  ElementInvalidException,
-  ElementAlreadyExists,
-  ElementNotFoundException,
-  InvalidCredentials,
-  NotAuthorizedException,
-  DatabaseException,
-  HttpErrorCodes,
-  evalException,
 };
