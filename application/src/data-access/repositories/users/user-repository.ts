@@ -1,7 +1,7 @@
 import { DatabaseException } from '../../../common/exceptions/exceptions';
-import { User } from '../../models/users/user-model';
+import { User, UserInput } from '../../models/users/user-model';
 
-export const createUser = async (newUser: User): Promise<User> => {
+export const createUser = async (newUser: UserInput): Promise<User> => {
   try {
     return await User.create(newUser);
   } catch (error) {
@@ -21,10 +21,28 @@ export const deleteUser = async (userId: string): Promise<string> => {
   }
 };
 
-export const updateUser = async (userId: string, updatedUser: User): Promise<User> => {
+export const updateUser = async (userId: string, updatedUser: User): Promise<any> => {
   try {
     await User.update(updatedUser, { where: { id: userId } });
     return await User.findByPk(userId);
+  } catch (error) {
+    throw new DatabaseException(error.message);
+  }
+};
+
+export const existsUserById = async (userId: string): Promise<boolean> => {
+  try {
+    const user = await User.findByPk(userId);
+    return !!user;
+  } catch (error) {
+    throw new DatabaseException(error.message);
+  }
+};
+
+export const existsUserByEmail = async (email: string): Promise<boolean> => {
+  try {
+    const user = await User.findOne({ where: { email } });
+    return !!user;
   } catch (error) {
     throw new DatabaseException(error.message);
   }
