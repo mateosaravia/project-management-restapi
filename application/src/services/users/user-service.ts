@@ -1,11 +1,11 @@
-import * as hasher from "../common/utils/hasher";
-import * as exceptions from "../common/exceptions/exceptions";
-import * as userRepository from "../data-access/repositories/users/user-repository";
+import * as hasher from "../../common/utils/hasher";
+import * as exceptions from "../../common/exceptions/exceptions";
+import * as userRepository from "../../data-access/repositories/users/user-repository";
 
 import { validateUser } from "./user-validator";
-import { User } from "../data-access/models/users/user-model";
+import { User, UserOutput } from "../../data-access/models/users/user-model";
 
-export const createUser = async (newUser: typeof User): Promise<any> => {
+export const createUser = async (newUser: User): Promise<UserOutput> => {
     validateUser(newUser);
 
     const existsUser: boolean = await userRepository.existsUserByEmail(newUser.email);
@@ -28,7 +28,7 @@ export const deleteUser = async (userId: string): Promise<string> => {
     return await userRepository.deleteUser(userId);
 };
 
-export const updateUser = async (userId: string, updatedUser: typeof User): Promise<any> => {
+export const updateUser = async (userId: string, updatedUser: User): Promise<User> => {
     validateUser(updatedUser);
 
     const existsUser: boolean = await userRepository.existsUserById(userId);
@@ -38,4 +38,9 @@ export const updateUser = async (userId: string, updatedUser: typeof User): Prom
     }
 
     return await userRepository.updateUser(userId, updatedUser);
+};
+
+export const getUser = async (email: string): Promise<UserOutput | null> => {
+    const user = await userRepository.getUser(email);
+    return user;
 };

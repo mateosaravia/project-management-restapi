@@ -1,7 +1,7 @@
 import express from 'express';
 export const router = express.Router();
 
-import * as userService from '../services/user-service';
+import * as userService from '../../services/users/user-service';
 
 router.post('/signup', async (req, res, next) => {
   try {

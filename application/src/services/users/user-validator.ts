@@ -1,6 +1,7 @@
-import * as stringValidators from '../common/validations/string-validator';
+import * as stringValidators from '../../common/validations/string-validator';
+import { UserInput } from '../../data-access/models/users/user-model';
 
-export const validateUser = (newUser): void => { // add :User
+export const validateUser = (newUser: UserInput): void => {
   validateUsername(newUser.username);
   validatePassword(newUser.password);
   validateEmail(newUser.email);

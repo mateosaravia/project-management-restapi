@@ -6,6 +6,7 @@ interface UserAttributes {
   username: string;
   email: string;
   password: string;
+  role?: string
 }
 
 export interface UserInput extends UserAttributes {}
@@ -16,6 +17,7 @@ export class User extends Model<UserAttributes, UserInput> implements UserAttrib
   public username!: string;
   public email!: string;
   public password!: string;
+  public role!: string;
 }
 
 User.init(
@@ -38,6 +40,10 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: 'developer',
     },
   },
   {

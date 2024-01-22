@@ -47,3 +47,12 @@ export const existsUserByEmail = async (email: string): Promise<boolean> => {
     throw new DatabaseException(error.message);
   }
 };
+
+export const getUser = async (email: string): Promise<UserOutput | null> => {
+  try {
+    const user = await User.findOne({ where: { email } });
+    return user || null;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
+};
