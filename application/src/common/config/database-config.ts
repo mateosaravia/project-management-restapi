@@ -15,6 +15,6 @@ sequelize
   .then(() => {
     console.log('Database connection has been established successfully.');
   })
-  .catch((error) => {
+  .catch((error: any) => {
     console.error('Unable to connect to the database: ', error);
   });

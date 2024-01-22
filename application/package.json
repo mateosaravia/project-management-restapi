@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
+    "tsc": "tsc",
     "start": "nodemon -L ./src/app.ts"
   },
   "keywords": [],
