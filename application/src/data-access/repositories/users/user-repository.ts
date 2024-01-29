@@ -56,3 +56,12 @@ export const getUser = async (email: string): Promise<UserOutput | null> => {
     throw new DatabaseException(error.message);
   }
 };
+
+export const getUserById = async (userId: number): Promise<UserOutput | null> => {
+  try {
+    const user = await User.findByPk(userId);
+    return user || null;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
+};
