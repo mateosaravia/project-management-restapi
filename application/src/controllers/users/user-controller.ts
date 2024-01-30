@@ -31,3 +31,13 @@ router.patch('/users/:userId', async (req, res, next) => {
     return next(err);
   }
 });
+
+router.get('/users/:userId', async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    let user = await userService.getUserById(parseInt(userId));
+    res.status(200).send(user);
+  } catch (err) {
+    return next(err);
+  }
+});
