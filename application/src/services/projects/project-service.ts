@@ -2,6 +2,7 @@ import { ProjectInput, ProjectOutput } from '../../data-access/models/projects/p
 import { validateProject } from './project-validator';
 
 import * as exceptions from '../../common/exceptions/exceptions';
+import * as projectRepository from '../../data-access/repositories/projects/project-repository';
 
 export const createProject = async (newProject: ProjectInput): Promise<ProjectOutput> => {
   validateProject(newProject);
@@ -40,4 +41,9 @@ export const deleteProject = async (projectId: number): Promise<string> => {
 
   const deleteResult = await projectRepository.deleteProject(projectId);
   return deleteResult;
+};
+
+export const getAllProjects = async (): Promise<ProjectOutput[]> => {
+  const projects = await projectRepository.getAllProjects();
+  return projects;
 };
