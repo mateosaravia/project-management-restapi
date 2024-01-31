@@ -1,6 +1,6 @@
 import { ProjectInput } from '../../data-access/models/projects/project-model';
 
-import * as stringValidations from '../../common/validations/string-validator';
+import * as stringValidations from '../../common/utils/validations/string-validator';
 
 export const validateProject = (newProject: ProjectInput): void => {
   validateTitle(newProject.title);

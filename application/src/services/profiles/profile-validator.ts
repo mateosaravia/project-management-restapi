@@ -1,4 +1,4 @@
-import * as stringValidators from '../../common/validations/string-validator';
+import * as stringValidators from '../../common/utils/validations/string-validator';
 import { ProfileInput } from '../../data-access/models/profiles/profile-model';
 
 export const validateProfile = (profile: ProfileInput): void => {

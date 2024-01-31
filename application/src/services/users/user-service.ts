@@ -1,4 +1,4 @@
-import * as hasher from '../../common/utils/hasher';
+import * as hasher from '../../common/utils/hasher/hasher';
 import * as exceptions from '../../common/exceptions/exceptions';
 import * as userRepository from '../../data-access/repositories/users/user-repository';
 
@@ -18,7 +18,7 @@ export const createUser = async (newUser: User): Promise<UserOutput> => {
   return await userRepository.createUser(newUser);
 };
 
-export const deleteUser = async (userId: string): Promise<string> => {
+export const deleteUser = async (userId: number): Promise<string> => {
   const existsUser: boolean = await userRepository.existsUserById(userId);
 
   if (!existsUser) {
@@ -28,7 +28,7 @@ export const deleteUser = async (userId: string): Promise<string> => {
   return await userRepository.deleteUser(userId);
 };
 
-export const updateUser = async (userId: string, updatedUser: User): Promise<User> => {
+export const updateUser = async (userId: number, updatedUser: User): Promise<User> => {
   validateUser(updatedUser);
 
   const existsUser: boolean = await userRepository.existsUserById(userId);
@@ -45,7 +45,7 @@ export const getUser = async (email: string): Promise<UserOutput | null> => {
   return user;
 };
 
-export const getUserById = async (userId: string): Promise<UserOutput | null> => {
+export const getUserById = async (userId: number): Promise<UserOutput | null> => {
   const user = await userRepository.getUserById(userId);
   return user;
 };

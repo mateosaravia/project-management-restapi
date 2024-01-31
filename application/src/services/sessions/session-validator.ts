@@ -1,4 +1,4 @@
-import * as stringValidator from '../../common/validations/string-validator';
+import * as stringValidator from '../../common/utils/validations/string-validator';
 
 export const validateLogin = (loginRequest: any): void => {
   validateEmail(loginRequest.email);

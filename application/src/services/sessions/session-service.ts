@@ -1,7 +1,7 @@
 import { validateLogin } from './session-validator';
 import { ElementInvalidException } from '../../common/exceptions/exceptions';
 import * as userService from '../users/user-service';
-import { comparePassword } from '../../common/utils/hasher';
+import { comparePassword } from '../../common/utils/hasher/hasher';
 import * as tokenService from '../tokens/tokens-service';
 
 export const loginUser = async (loginInfo: any): Promise<string> => {

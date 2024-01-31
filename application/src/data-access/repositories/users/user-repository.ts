@@ -9,7 +9,7 @@ export const createUser = async (newUser: UserInput): Promise<UserOutput> => {
   }
 };
 
-export const deleteUser = async (userId: string): Promise<string> => {
+export const deleteUser = async (userId: number): Promise<string> => {
   try {
     const deleteResult = await User.destroy({ where: { id: userId } });
     if (deleteResult === 0) {
@@ -21,7 +21,7 @@ export const deleteUser = async (userId: string): Promise<string> => {
   }
 };
 
-export const updateUser = async (userId: string, updatedUser: User): Promise<any> => {
+export const updateUser = async (userId: number, updatedUser: User): Promise<any> => {
   try {
     await User.update(updatedUser, { where: { id: userId } });
     return await User.findByPk(userId);
@@ -30,7 +30,7 @@ export const updateUser = async (userId: string, updatedUser: User): Promise<any
   }
 };
 
-export const existsUserById = async (userId: string): Promise<boolean> => {
+export const existsUserById = async (userId: number): Promise<boolean> => {
   try {
     const user = await User.findByPk(userId);
     return !!user;

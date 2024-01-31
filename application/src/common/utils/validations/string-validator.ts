@@ -1,4 +1,4 @@
-const { ElementInvalidException } = require('../exceptions/exceptions');
+import { ElementInvalidException } from '../../exceptions/exceptions';
 
 export const throwExeptionIfEmptyString = (val: string, message: string): void => {
   if (!val) {

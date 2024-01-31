@@ -15,7 +15,7 @@ router.post('/signup', async (req, res, next) => {
 router.delete('/users/:userId', async (req, res, next) => {
   try {
     const { userId } = req.params;
-    let deleteResult = await userService.deleteUser(userId);
+    let deleteResult = await userService.deleteUser(parseInt(userId));
     res.status(200).send(deleteResult);
   } catch (err) {
     return next(err);
@@ -25,7 +25,7 @@ router.delete('/users/:userId', async (req, res, next) => {
 router.patch('/users/:userId', async (req, res, next) => {
   try {
     const { userId } = req.params;
-    let updateResult = await userService.updateUser(userId, req.body);
+    let updateResult = await userService.updateUser(parseInt(userId), req.body);
     res.status(200).send(updateResult);
   } catch (err) {
     return next(err);

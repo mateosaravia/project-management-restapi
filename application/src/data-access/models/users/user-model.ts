@@ -6,7 +6,7 @@ interface UserAttributes {
   username: string;
   email: string;
   password: string;
-  role?: string
+  role: string
 }
 
 export interface UserInput extends UserAttributes {}
