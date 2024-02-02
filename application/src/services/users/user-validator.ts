@@ -15,7 +15,7 @@ export const validateUsername = (username: string): void => {
   stringValidators.throwExceptionIfMinLength(username, 3, 'Username must be at least 3 characters long');
 };
 
-const validatePassword = (password: string): void => {
+export const validatePassword = (password: string): void => {
   stringValidators.throwExeptionIfEmptyString(password, 'Password cannot be empty');
   stringValidators.throwExceptionIfMinLength(password, 6, 'Password must be at least 8 characters long');
   stringValidators.throwExceptionIfNotContainsLetters(password, 'Password must contain at least one letter');
@@ -26,12 +26,12 @@ const validatePassword = (password: string): void => {
   );
 };
 
-const validateEmail = (email: string): void => {
+export const validateEmail = (email: string): void => {
   stringValidators.throwExeptionIfEmptyString(email, 'Email cannot be empty');
   stringValidators.throwExceptionIfNotValidEmail(email, 'Email is not valid');
 };
 
-const validateRole = (role: string): void => {
+export const validateRole = (role: string): void => {
   if (role) {
     if (!ROLES.includes(role)) {
       stringValidators.throwExeptionIfEmptyString('', 'Role is not valid');
