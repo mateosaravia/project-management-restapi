@@ -18,7 +18,7 @@ export const blacklistToken = async (token: string) => {
     const redisClient = getClient();
     const expires = 12 * 60 * 60;
 
-    await redisClient.set(token, 'loggedOutToken', { EX: expires });
+    await redisClient?.set(token, 'loggedOutToken', { EX: expires });
   } catch (err) {
     throw new Error(err + 'Error accessing redis database');
   }

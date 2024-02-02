@@ -1,8 +1,8 @@
-import redis from 'redis';
+import * as redis from 'redis';
 
-let client: any = null;
+let client: redis.RedisClientType | null = null;
 
-const createClient = () => {
+const initClient = async () => {
   client = redis.createClient({
     url: process.env.REDIS_URL,
   });
@@ -22,7 +22,7 @@ const createClient = () => {
 
 export const getClient = () => {
   if (!client) {
-    createClient();
+    initClient();
   }
   return client;
 };
