@@ -21,14 +21,23 @@ export const deleteUser = async (userId: number): Promise<string> => {
   }
 };
 
-export const updateUser = async (userId: number, updatedUser: User): Promise<any> => {
+export const updatePassword = async (userId: number, newPassword: string): Promise<any> => {
   try {
-    await User.update(updatedUser, { where: { id: userId } });
+    await User.update({ password: newPassword }, { where: { id: userId } });
     return await User.findByPk(userId);
   } catch (error: any) {
     throw new DatabaseException(error.message);
   }
 };
+
+export const updateUsername = async (userId: number, newUsername: string): Promise<any> => {
+    try {
+      await User.update({ username: newUsername }, { where: { id: userId } });
+      return await User.findByPk(userId);
+    } catch (error: any) {
+      throw new DatabaseException(error.message);
+    }
+  };
 
 export const existsUserById = async (userId: number): Promise<boolean> => {
   try {
@@ -42,6 +51,15 @@ export const existsUserById = async (userId: number): Promise<boolean> => {
 export const existsUserByEmail = async (email: string): Promise<boolean> => {
   try {
     const user = await User.findOne({ where: { email } });
+    return !!user;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
+};
+
+export const existsUserByUsername = async (username: string): Promise<boolean> => {
+  try {
+    const user = await User.findOne({ where: { username } });
     return !!user;
   } catch (error: any) {
     throw new DatabaseException(error.message);

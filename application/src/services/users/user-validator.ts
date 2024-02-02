@@ -10,7 +10,7 @@ export const validateUser = (newUser: UserInput): void => {
   validateRole(newUser.role);
 };
 
-const validateUsername = (username: string): void => {
+export const validateUsername = (username: string): void => {
   stringValidators.throwExeptionIfEmptyString(username, 'Username cannot be empty');
   stringValidators.throwExceptionIfMinLength(username, 3, 'Username must be at least 3 characters long');
 };
