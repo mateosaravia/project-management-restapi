@@ -13,6 +13,11 @@ export const createUser = async (newUser: User): Promise<UserOutput> => {
     throw new exceptions.ElementAlreadyExists(`User with email ${newUser.email} already exists`);
   }
 
+  const alreadyUsedUsername = await userRepository.existsUserByUsername(newUser.username);
+  if (alreadyUsedUsername) {
+    throw new exceptions.ElementInvalidException('Username is already used');
+  }
+
   newUser.password = await hasher.hashPassword(newUser.password);
   return await userRepository.createUser(newUser);
 };

@@ -6,12 +6,12 @@ import { validateProfile } from './profile-validator';
 import { ProfileInput, ProfileOutput } from '../../data-access/models/profiles/profile-model';
 
 export const createProfile = async (userId: number, newProfile: ProfileInput): Promise<ProfileOutput> => {
-  validateProfile(newProfile);
-
   let user = await userService.getUserById(userId);
   if (!user) {
     throw new exceptions.ElementNotFoundException(`Unable to create profile, user with id ${userId} not found`);
   }
+
+  validateProfile(newProfile);
 
   let existsProfile: boolean = await existsProfileByUserId(userId);
   if (existsProfile) {
@@ -23,17 +23,22 @@ export const createProfile = async (userId: number, newProfile: ProfileInput): P
 };
 
 export const updateProfile = async (userId: number, updatedProfile: ProfileInput): Promise<ProfileOutput> => {
-  validateProfile(updatedProfile);
-
   let existsProfile: boolean = await existsProfileByUserId(userId);
   if (!existsProfile) {
-    throw new exceptions.ElementNotFoundException(`Profile with userId ${userId} not found`);
+    throw new exceptions.ElementNotFoundException(`Profile for user with userId ${userId} not found`);
   }
+
+  validateProfile(updatedProfile);
 
   return await profileRepository.updateProfile(userId, updatedProfile);
 };
 
 export const getProfileById = async (userId: number): Promise<ProfileOutput | null> => {
+  let existsProfile: boolean = await existsProfileByUserId(userId);
+  if (!existsProfile) {
+    throw new exceptions.ElementNotFoundException(`Profile with userId ${userId} not found`);
+  }
+
   const profile = await profileRepository.getProfileByUserId(userId);
   return profile;
 };
