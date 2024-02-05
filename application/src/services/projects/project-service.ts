@@ -1,5 +1,5 @@
-import { Project, ProjectInput, ProjectOutput } from '../../models/projects/project-model';
-import { DatabaseException } from '../../../common/exceptions/exceptions';
+import { DatabaseException } from '../../common/exceptions/exceptions';
+import { Project, ProjectInput, ProjectOutput } from '../../data-access/models/projects/project-model';
 
 export const createProject = async (newProject: ProjectInput): Promise<ProjectOutput> => {
   try {
