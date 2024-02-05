@@ -14,16 +14,6 @@ router.post('/projects', verifyToken, async (req: CustomRequest, res: any, next:
   }
 });
 
-router.post('/projects/:projectId/invite', verifyToken, async (req: any, res: any, next: any) => {
-  try {
-    const { projectId } = req.params;
-    let response = await projectService.inviteUser(userEmail, parseInt(projectId), req.body);
-    return res.status(200).send(response);
-  } catch (err) {
-    return next(err);
-  }
-});
-
 router.put('/projects/:projectId', async (req, res, next) => {
   try {
     const { projectId } = req.params;
@@ -57,6 +47,27 @@ router.delete('/projects/:projectId', async (req, res, next) => {
   try {
     const { projectId } = req.params;
     let response = projectService.deleteProject(parseInt(projectId));
+    return res.status(200).send(response);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.delete('/projects/:projectId/leave', async (req, res, next) => {
+  try {
+    const { projectId } = req.params;
+    let response = projectService.leaveProject(parseInt(projectId));
+    return res.status(200).send(response);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.delete('/projects/:projectId/remove', async (req, res, next) => {
+  try {
+    const { projectId } = req.params;
+    const { users } = req.body;
+    let response = projectService.removeUsers(parseInt(projectId), users);
     return res.status(200).send(response);
   } catch (err) {
     return next(err);
