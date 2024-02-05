@@ -1,9 +1,15 @@
 import { DatabaseException } from '../../../common/exceptions/exceptions';
 import { Project, ProjectInput, ProjectOutput } from '../../models/projects/project-model';
+import { ProjectUser } from '../../models/projects/project-user-model';
+import { User } from '../../models/users/user-model';
 
-export const createProject = async (newProject: ProjectInput): Promise<ProjectOutput> => {
+export const createProject = async (userEmail: string, newProject: ProjectInput): Promise<ProjectOutput> => {
   try {
     const project = await Project.create(newProject);
+
+    const projectOwner = await User.findOne({ where: { email: userEmail } });
+    await ProjectUser.create({ projectId: project.id, userId: projectOwner!.id });
+    
     return project;
   } catch (error: any) {
     throw new DatabaseException(error.message);

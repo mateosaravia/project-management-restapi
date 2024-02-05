@@ -44,15 +44,15 @@ Project.init(
       allowNull: false,
     },
     skills: {
-      type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
     technologies: {
-      type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
     tags: {
-      type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
   },

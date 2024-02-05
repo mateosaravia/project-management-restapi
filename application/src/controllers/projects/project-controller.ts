@@ -2,11 +2,23 @@ import express from 'express';
 export const router = express.Router();
 
 import * as projectService from '../../services/projects/project-service';
+import { CustomRequest, verifyToken } from '../../common/middlewares/auth-middlware';
 
-router.post('/projects', async (req, res, next) => {
+router.post('/projects', verifyToken, async (req: CustomRequest, res: any, next: any) => {
   try {
-    let project = await projectService.createProject(req.body);
+    const userEmail = req.userEmail;
+    let project = await projectService.createProject(userEmail, req.body);
     return res.status(201).send(project);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post('/projects/:projectId/invite', verifyToken, async (req: any, res: any, next: any) => {
+  try {
+    const { projectId } = req.params;
+    let response = await projectService.inviteUser(userEmail, parseInt(projectId), req.body);
+    return res.status(200).send(response);
   } catch (err) {
     return next(err);
   }

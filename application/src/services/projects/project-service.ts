@@ -4,7 +4,7 @@ import { validateProject } from './project-validator';
 import * as projectRepository from '../../data-access/repositories/projects/project-repository';
 import * as exceptions from '../../common/exceptions/exceptions';
 
-export const createProject = async (newProject: ProjectInput): Promise<ProjectOutput> => {
+export const createProject = async (username: string, newProject: ProjectInput): Promise<ProjectOutput> => {
   validateProject(newProject);
 
   let project = await projectRepository.createProject(newProject);
