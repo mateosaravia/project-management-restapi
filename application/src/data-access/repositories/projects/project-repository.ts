@@ -1,49 +1,50 @@
-import { validateProject } from '../../../services/projects/project-validator';
-import { ProjectInput, ProjectOutput } from '../../models/projects/project-model';
-
-import * as projectRepository from '../../repositories/projects/project-repository';
-import * as exceptions from '../../../common/exceptions/exceptions';
+import { DatabaseException } from '../../../common/exceptions/exceptions';
+import { Project, ProjectInput, ProjectOutput } from '../../models/projects/project-model';
 
 export const createProject = async (newProject: ProjectInput): Promise<ProjectOutput> => {
-  validateProject(newProject);
-
-  let project = await projectRepository.createProject(newProject);
-  return project;
+  try {
+    const project = await Project.create(newProject);
+    return project;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
 };
 
 export const getProject = async (projectId: number): Promise<ProjectOutput | null> => {
-  const project = await projectRepository.getProject(projectId);
-  return project;
-};
-
-export const existsProject = async (projectId: number): Promise<boolean> => {
-  const project = await projectRepository.getProject(projectId);
-  return !!project;
-};
-
-export const updateProject = async (projectId: number, projectUpdate: ProjectInput): Promise<ProjectOutput> => {
-  validateProject(projectUpdate);
-
-  const exists = await existsProject(projectId);
-  if (!exists) {
-    throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
+  try {
+    const project = await Project.findByPk(projectId);
+    return project || null;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
   }
-
-  const updatedProject = await projectRepository.updateProject(projectId, projectUpdate);
-  return updatedProject;
-};
-
-export const deleteProject = async (projectId: number): Promise<string> => {
-  const exists = await existsProject(projectId);
-  if (!exists) {
-    throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
-  }
-
-  const deleteResult = await projectRepository.deleteProject(projectId);
-  return deleteResult;
 };
 
 export const getAllProjects = async (): Promise<ProjectOutput[]> => {
-  const projects = await projectRepository.getAllProjects();
-  return projects;
+  try {
+    const projects = await Project.findAll();
+    return projects;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
+};
+
+export const updateProject = async (projectId: number, projectUpdate: ProjectInput): Promise<any> => {
+  try {
+    await Project.update(projectUpdate, { where: { id: projectId } });
+    return await Project.findByPk(projectId);
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
+};
+
+export const deleteProject = async (projectId: number): Promise<string> => {
+  try {
+    const deleteResult = await Project.destroy({ where: { id: projectId } });
+    if (deleteResult === 0) {
+      return 'Project not deleted';
+    }
+    return 'Project deleted correctly';
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
 };

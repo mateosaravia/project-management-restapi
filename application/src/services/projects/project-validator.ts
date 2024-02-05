@@ -7,8 +7,8 @@ export const validateProject = (newProject: ProjectInput): void => {
   validateDescription(newProject.description);
   validateDocumentation(newProject.documentation);
   validateSkills(newProject.skills);
-  validateTechnologies(newProject.skills);
-  validateTags(newProject.skills);
+  validateTechnologies(newProject.technologies);
+  validateTags(newProject.tags);
 };
 
 const validateTitle = (projectTitle: string): void => {
