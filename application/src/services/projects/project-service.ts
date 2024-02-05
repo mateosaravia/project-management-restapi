@@ -4,6 +4,7 @@ import { validateProject } from './project-validator';
 import * as userService from '../users/user-service';
 import * as projectRepository from '../../data-access/repositories/projects/project-repository';
 import * as exceptions from '../../common/exceptions/exceptions';
+import { UserOutput } from '../../data-access/models/users/user-model';
 
 export const createProject = async (userEmail: string, newProject: ProjectInput): Promise<ProjectOutput> => {
   validateProject(newProject);
@@ -60,22 +61,27 @@ export const leaveProject = async (projectId: number, userEmail: string): Promis
     throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
   }
 
-  const deleteResult = await projectRepository.leaveProject(projectId, userEmail);
+  const user = await userService.getUser(userEmail);
+
+  const deleteResult = await projectRepository.leaveProject(projectId, user!);
   return deleteResult;
 };
 
-export const removeUsers = async (projectId: number, users: string[]): Promise<string> => {
+export const removeUsers = async (projectId: number, usersEmails: string[]): Promise<string> => {
   const exists = await existsProject(projectId);
   if (!exists) {
     throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
   }
 
-  users.forEach(async (user) => {
-    const existantUser = await userService.existsUserByEmail(user);
-    if (!existantUser) {
-      throw new exceptions.ElementNotFoundException(`User with email ${user} not found`);
+  const users: UserOutput[] = [];
+  usersEmails.forEach(async (userEmail) => {
+    const user = await userService.getUser(userEmail);
+    if (!user) {
+      throw new exceptions.ElementNotFoundException(`User with email ${userEmail} not found`);
     }
-  }
+
+    users.push(user);
+  });
 
   const deleteResult = await projectRepository.removeUsers(projectId, users);
   return deleteResult;
