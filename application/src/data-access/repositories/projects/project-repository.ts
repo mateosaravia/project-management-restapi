@@ -74,3 +74,12 @@ export const removeUsers = async (projectId: number, users: UserOutput[]): Promi
     throw new DatabaseException(error.message);
   }
 };
+
+export const existsUserInProject = async (projectId: number, userId: number): Promise<boolean> => {
+  try {
+    const exists = await ProjectUser.findOne({ where: { projectId, userId } });
+    return exists !== null;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
+};

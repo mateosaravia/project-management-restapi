@@ -12,6 +12,7 @@ export const validateProject = (newProject: ProjectInput): void => {
 };
 
 const validateTitle = (projectTitle: string): void => {
+  stringValidations.throwExeptionIfEmptyString(projectTitle, 'The project title should not be empty.');
   stringValidations.throwExceptionIfMinLength(
     projectTitle,
     3,
@@ -20,6 +21,7 @@ const validateTitle = (projectTitle: string): void => {
 };
 
 const validateDescription = (projectDescription: string): void => {
+  stringValidations.throwExeptionIfEmptyString(projectDescription, 'The project description should not be empty.');
   stringValidations.throwExceptionIfMinLength(
     projectDescription,
     10,
@@ -28,6 +30,7 @@ const validateDescription = (projectDescription: string): void => {
 };
 
 const validateDocumentation = (projectDocumentation: string): void => {
+  stringValidations.throwExeptionIfEmptyString(projectDocumentation, 'The project documentation should not be empty.');
   stringValidations.throwExceptionIfMinLength(
     projectDocumentation,
     30,

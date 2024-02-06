@@ -1,14 +1,15 @@
 import express from 'express';
 export const router = express.Router();
 
-import { verifyToken } from '../../common/middlewares/auth-middlware';
+import { CustomRequest, verifyToken } from '../../common/middlewares/auth-middlware';
 import * as invitationService from '../../services/invitations/invitation-service';
 
 router.post('/projects/:projectId/invite', verifyToken, async (req: any, res: any, next: any) => {
   try {
     const { projectId } = req.params;
-    const { users } = req.body;
-    let response = await invitationService.inviteUsers(parseInt(projectId), users);
+    const { users, customMessage } = req.body;
+
+    let response = await invitationService.inviteUsers(parseInt(projectId), users, customMessage);
     return res.status(200).send(response);
   } catch (err) {
     return next(err);
@@ -48,3 +49,23 @@ router.delete(
     }
   },
 );
+
+router.get('/projects/:projectId/invitations', verifyToken, async (req: any, res: any, next: any) => {
+  try {
+    const { projectId } = req.params;
+    let response = await invitationService.getProjectInvitations(parseInt(projectId));
+    return res.status(200).send(response);
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.get('/projects/invitations', verifyToken, async (req: CustomRequest, res: any, next: any) => {
+  try {
+    const userEmail = req.userEmail;
+    let response = await invitationService.getUserInvitations(userEmail);
+    return res.status(200).send(response);
+  } catch (err) {
+    return next(err);
+  }
+});

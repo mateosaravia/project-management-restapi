@@ -5,7 +5,7 @@ import { comparePassword } from '../../common/utils/hasher/hasher';
 import * as userService from '../users/user-service';
 import * as tokenService from '../tokens/token-service';
 
-export const loginUser = async (loginInfo: any): Promise<string> => {
+export const loginUser = async (loginInfo: any): Promise<{}> => {
   validateLogin(loginInfo);
 
   let user = await userService.getUser(loginInfo.email);
@@ -20,7 +20,7 @@ export const loginUser = async (loginInfo: any): Promise<string> => {
 
   let token = await tokenService.generateJWTUserPermissions(user, user.role);
 
-  return token;
+  return { token };
 };
 
 export const logoutUser = async (token: string): Promise<void> => {

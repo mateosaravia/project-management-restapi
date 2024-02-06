@@ -21,7 +21,7 @@ export const existsProject = async (projectId: number): Promise<boolean> => {
 export const getProject = async (projectId: number): Promise<ProjectOutput | null> => {
   const exists: boolean = await existsProject(projectId);
   if (!exists) {
-    throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
+    throw new exceptions.ElementNotFoundException(`Project with id ${projectId} not found`);
   }
 
   const project = await projectRepository.getProject(projectId);
@@ -38,7 +38,7 @@ export const updateProject = async (projectId: number, projectUpdate: ProjectInp
 
   const exists = await existsProject(projectId);
   if (!exists) {
-    throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
+    throw new exceptions.ElementNotFoundException(`Project with id ${projectId} not found`);
   }
 
   const updatedProject = await projectRepository.updateProject(projectId, projectUpdate);
@@ -48,7 +48,7 @@ export const updateProject = async (projectId: number, projectUpdate: ProjectInp
 export const deleteProject = async (projectId: number): Promise<string> => {
   const exists = await existsProject(projectId);
   if (!exists) {
-    throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
+    throw new exceptions.ElementNotFoundException(`Project with id ${projectId} not found`);
   }
 
   const deleteResult = await projectRepository.deleteProject(projectId);
@@ -56,33 +56,42 @@ export const deleteProject = async (projectId: number): Promise<string> => {
 };
 
 export const leaveProject = async (projectId: number, userEmail: string): Promise<string> => {
-  const exists = await existsProject(projectId);
-  if (!exists) {
-    throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
-  }
-
   const user = await userService.getUser(userEmail);
+
+  const existsInProject = await existsUserInProject(projectId, user!.id);
+  if (!existsInProject) {
+    throw new exceptions.ElementNotFoundException(
+      `User with email ${userEmail} not found in project with id ${projectId}`,
+    );
+  }
 
   const deleteResult = await projectRepository.leaveProject(projectId, user!);
   return deleteResult;
 };
 
-export const removeUsers = async (projectId: number, usersEmails: string[]): Promise<string> => {
-  const exists = await existsProject(projectId);
-  if (!exists) {
-    throw new exceptions.ElementNotFoundException(`Project with id: ${projectId} not found`);
-  }
-
+export const removeUsers = async (projectId: number, userIds: string[]): Promise<string> => {
   const users: UserOutput[] = [];
-  usersEmails.forEach(async (userEmail) => {
-    const user = await userService.getUser(userEmail);
+  for (const userId of userIds) {
+    const user = await userService.getUserById(parseInt(userId));
     if (!user) {
-      throw new exceptions.ElementNotFoundException(`User with email ${userEmail} not found`);
+      throw new exceptions.ElementNotFoundException(`User with id ${userId} not found`);
+    }
+
+    const existsInProject = await existsUserInProject(projectId, user!.id);
+    if (!existsInProject) {
+      throw new exceptions.ElementNotFoundException(
+        `User with id ${userId} not found in project with id ${projectId}`,
+      );
     }
 
     users.push(user);
-  });
+  }
 
   const deleteResult = await projectRepository.removeUsers(projectId, users);
   return deleteResult;
+};
+
+export const existsUserInProject = async (projectId: number, userId?: number): Promise<boolean> => {
+  const exists = await projectRepository.existsUserInProject(projectId, userId!);
+  return exists;
 };

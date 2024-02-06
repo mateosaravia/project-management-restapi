@@ -1,4 +1,5 @@
 import { sequelize } from '../../../common/config/database-config';
+import { DataTypes } from 'sequelize';
 
 import { Project } from './project-model';
 import { User } from '../users/user-model';
@@ -7,7 +8,7 @@ export const ProjectUser = sequelize.define(
   'ProjectUser',
   {
     projectId: {
-      type: sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'projects',
@@ -15,7 +16,7 @@ export const ProjectUser = sequelize.define(
       },
     },
     userId: {
-      type: sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'users',
@@ -24,7 +25,7 @@ export const ProjectUser = sequelize.define(
     },
   },
   {
-    tableName: 'ProjectUsers',
+    tableName: 'project-users',
     timestamps: false,
     sequelize,
   },

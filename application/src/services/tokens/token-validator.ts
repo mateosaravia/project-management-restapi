@@ -1,8 +1,9 @@
+import e from 'express';
 import { getClient } from '../../common/config/redis-config';
 import { InvalidCredentials } from '../../common/exceptions/exceptions';
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY || 'H+MbQeThWmYq3t6w9z$C&F)J@NcRfUjX';
+const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 interface DecodedToken {
   email: string;
@@ -17,7 +18,7 @@ export const verifyJWT = async (token: string | null): Promise<DecodedToken> => 
   }
   await blacklistedToken(token);
   try {
-    let decoded = jwt.verify(token, SECRET_KEY) as DecodedToken;
+    let decoded = jwt.verify(token, SECRET_KEY!) as DecodedToken;
     return decoded;
   } catch (err: any) {
     if (err.name === 'TokenExpiredError') {

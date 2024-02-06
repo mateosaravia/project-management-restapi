@@ -69,11 +69,12 @@ export const getInvitation = async (invitationId: number) => {
 
 export const getUserInvitations = async (ownerEmail: string) => {
   const user = await userService.getUser(ownerEmail);
+
   if (!user) {
     throw new exceptions.ElementNotFoundException(`User with email ${ownerEmail} not found`);
   }
   
-  const invitations = await invitationRepository.getUserInvitations(user!.id);
+  const invitations = await invitationRepository.getUserInvitations(user);
   return invitations;
 };
 
@@ -82,7 +83,7 @@ export const getProjectInvitations = async (projectId: number) => {
   if (!existantProject) {
     throw new exceptions.ElementNotFoundException(`Project with id ${projectId} not found`);
   }
-  
+
   const invitations = await invitationRepository.getProjectInvitations(projectId);
   return invitations;
 };

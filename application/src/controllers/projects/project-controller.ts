@@ -17,7 +17,7 @@ router.post('/projects', verifyToken, async (req: CustomRequest, res: any, next:
 router.put('/projects/:projectId', async (req, res, next) => {
   try {
     const { projectId } = req.params;
-    let projectUpdated = projectService.updateProject(parseInt(projectId), req.body);
+    let projectUpdated = await projectService.updateProject(parseInt(projectId), req.body);
     return res.status(200).send(projectUpdated);
   } catch (err) {
     return next(err);
@@ -27,7 +27,7 @@ router.put('/projects/:projectId', async (req, res, next) => {
 router.get('/projects/:projectId', async (req, res, next) => {
   try {
     const { projectId } = req.params;
-    let project = projectService.getProject(parseInt(projectId));
+    let project = await projectService.getProject(parseInt(projectId));
     return res.status(200).send(project);
   } catch (err) {
     return next(err);
@@ -36,7 +36,7 @@ router.get('/projects/:projectId', async (req, res, next) => {
 
 router.get('/projects', async (req, res, next) => {
   try {
-    let projects = projectService.getAllProjects();
+    let projects = await projectService.getAllProjects();
     return res.status(200).send(projects);
   } catch (err) {
     return next(err);
@@ -46,17 +46,19 @@ router.get('/projects', async (req, res, next) => {
 router.delete('/projects/:projectId', async (req, res, next) => {
   try {
     const { projectId } = req.params;
-    let response = projectService.deleteProject(parseInt(projectId));
+    let response = await projectService.deleteProject(parseInt(projectId));
     return res.status(200).send(response);
   } catch (err) {
     return next(err);
   }
 });
 
-router.delete('/projects/:projectId/leave', async (req, res, next) => {
+router.delete('/projects/:projectId/leave', verifyToken, async (req: CustomRequest, res: any, next: any) => {
   try {
     const { projectId } = req.params;
-    let response = projectService.leaveProject(parseInt(projectId));
+    const userEmail = req.userEmail;
+
+    let response = await projectService.leaveProject(parseInt(projectId), userEmail);
     return res.status(200).send(response);
   } catch (err) {
     return next(err);
@@ -67,7 +69,8 @@ router.delete('/projects/:projectId/remove', async (req, res, next) => {
   try {
     const { projectId } = req.params;
     const { users } = req.body;
-    let response = projectService.removeUsers(parseInt(projectId), users);
+
+    let response = await projectService.removeUsers(parseInt(projectId), users);
     return res.status(200).send(response);
   } catch (err) {
     return next(err);

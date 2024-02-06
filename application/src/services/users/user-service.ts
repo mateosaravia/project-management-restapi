@@ -15,7 +15,7 @@ export const createUser = async (newUser: User): Promise<UserOutput> => {
 
   const alreadyUsedUsername = await userRepository.existsUserByUsername(newUser.username);
   if (alreadyUsedUsername) {
-    throw new exceptions.ElementInvalidException('Username is already used');
+    throw new exceptions.ElementInvalidException(`Username ${newUser.username} is already used`);
   }
 
   newUser.password = await hasher.hashPassword(newUser.password);
@@ -80,4 +80,8 @@ export const getUserById = async (userId: number): Promise<UserOutput | null> =>
 
 export const existsUserById = async (userId: number): Promise<boolean> => {
   return await userRepository.existsUserById(userId);
+};
+
+export const existsUserByEmail = async (email: string): Promise<boolean> => {
+  return await userRepository.existsUserByEmail(email);
 };
