@@ -3,6 +3,7 @@ import * as userService from '../users/user-service';
 import * as exceptions from '../../common/exceptions/exceptions';
 import * as reviewRepository from '../../data-access/repositories/reviews/review-repository';
 
+import { ReviewInput, ReviewOutput } from '../../data-access/models/reviews/review-model';
 import { validateReview } from './review-validator';
 
 export const createReview = async (
@@ -22,8 +23,9 @@ export const createReview = async (
     throw new exceptions.ElementNotFoundException(`User with email ${reviewerEmail} not found`);
   }
   review.qualifierId = user.id;
+  review.projectId = projectId;
 
-  const newReview = await reviewRepository.createReview(projectId, review);
+  const newReview = await reviewRepository.createReview(review);
   return newReview;
 };
 
