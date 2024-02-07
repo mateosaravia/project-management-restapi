@@ -1,5 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../../common/config/database-config';
+import { User } from '../users/user-model';
+import { Project } from '../projects/project-model';
 
 interface InvitationAttributes {
   id?: number;
@@ -30,10 +32,18 @@ Invitation.init(
     invitedUserId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
     },
     projectId: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      references: {
+        model: 'projects',
+        key: 'id',
+      },
     },
     status: {
       type: DataTypes.STRING,
@@ -51,6 +61,9 @@ Invitation.init(
     sequelize,
   },
 );
+
+Invitation.belongsTo(User, { foreignKey: 'invitedUserId', as: 'invitedUser' });
+Invitation.belongsTo(Project, { foreignKey: 'projectId', as: 'project' });
 
 sequelize
   .sync({ force: false })

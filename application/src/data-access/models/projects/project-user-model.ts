@@ -25,7 +25,7 @@ export const ProjectUser = sequelize.define(
     },
   },
   {
-    tableName: 'project-users',
+    tableName: 'projectUsers',
     timestamps: false,
     sequelize,
   },

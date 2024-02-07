@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../../common/config/database-config';
+import { User } from '../users/user-model';
 
 interface ProfileAttributes {
   id?: number;
@@ -39,6 +40,10 @@ Profile.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       unique: true,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
     },
     name: {
       type: DataTypes.STRING,
@@ -75,6 +80,8 @@ Profile.init(
     sequelize,
   },
 );
+
+Profile.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 sequelize
   .sync({ force: false })
