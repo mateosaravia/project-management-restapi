@@ -8,7 +8,6 @@ router.post('/projects/:projectId/invite', verifyToken, async (req: any, res: an
   try {
     const { projectId } = req.params;
     const { users, customMessage } = req.body;
-
     let response = await invitationService.inviteUsers(parseInt(projectId), users, customMessage);
     return res.status(200).send(response);
   } catch (err) {
@@ -37,7 +36,7 @@ router.post('/projects/invite/:invitationId/reject', verifyToken, async (req: an
 });
 
 router.delete(
-  '/projects/:projectId/invite/:invitationId/remove',
+  '/projects/invite/:invitationId/remove',
   verifyToken,
   async (req: any, res: any, next: any) => {
     try {
@@ -62,6 +61,7 @@ router.get('/projects/:projectId/invitations', verifyToken, async (req: any, res
 
 router.get('/projects/invitations', verifyToken, async (req: CustomRequest, res: any, next: any) => {
   try {
+    console.log('req.userEmail');
     const userEmail = req.userEmail;
     let response = await invitationService.getUserInvitations(userEmail);
     return res.status(200).send(response);

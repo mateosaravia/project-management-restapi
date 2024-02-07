@@ -17,7 +17,7 @@ export const acceptInvitation = async (invitationId: number): Promise<Invitation
 
     const invitation = await Invitation.findByPk(invitationId);
     await ProjectUser.create({ projectId: invitation?.projectId, userId: invitation?.invitedUserId });
-    
+
     return await Invitation.findByPk(invitationId);
   } catch (error: any) {
     throw new DatabaseException(error.message);
@@ -45,6 +45,15 @@ export const removeInvitation = async (invitationId: number): Promise<string> =>
   }
 };
 
+export const existsInvitationByStatus = async (invitationId: number, status: string): Promise<boolean> => {
+  try {
+    const invitation = await Invitation.findOne({ where: { id: invitationId, status } });
+    return !!invitation;
+  } catch (error: any) {
+    throw new DatabaseException(error.message);
+  }
+};
+
 export const getInvitation = async (invitationId: number): Promise<InvitationOutput | null> => {
   try {
     const invitation = await Invitation.findByPk(invitationId);
@@ -54,9 +63,9 @@ export const getInvitation = async (invitationId: number): Promise<InvitationOut
   }
 };
 
-export const getUserInvitations = async (user: UserOutput): Promise<InvitationOutput[]> => {
+export const getUserInvitations = async (userId: number): Promise<InvitationOutput[]> => {
   try {
-    const invitations = await Invitation.findAll({ where: { invitedUserId: user.id } });
+    const invitations = await Invitation.findAll({ where: { invitedUserId: userId } });
     return invitations;
   } catch (error: any) {
     throw new DatabaseException(error.message);

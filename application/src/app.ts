@@ -17,8 +17,8 @@ app.use(cors());
 app.use(baseUrl, userRouter);
 app.use(baseUrl, sessionRouter);
 app.use(baseUrl, profileRouter);
-app.use(baseUrl, projectRouter);
 app.use(baseUrl, invitationRouter);
+app.use(baseUrl, projectRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {

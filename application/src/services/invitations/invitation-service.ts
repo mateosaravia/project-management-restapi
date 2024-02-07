@@ -1,11 +1,11 @@
 import * as exceptions from '../../common/exceptions/exceptions';
-import { InvitationInput } from '../../data-access/models/invitations/invitation-model';
+import { InvitationInput, InvitationOutput } from '../../data-access/models/invitations/invitation-model';
 
 import * as projectService from '../projects/project-service';
 import * as userService from '../users/user-service';
 import * as invitationRepository from '../../data-access/repositories/invitations/invitation-repository';
 
-export const inviteUsers = async (projectId: number, users: string[], customMessage: string): Promise<any> => {
+export const inviteUsers = async (projectId: number, usersIds: string[], customMessage: string): Promise<any> => {
   const existantProject = await projectService.existsProject(projectId);
   if (!existantProject) {
     throw new exceptions.ElementNotFoundException(`Project with id ${projectId} not found`);
@@ -13,7 +13,7 @@ export const inviteUsers = async (projectId: number, users: string[], customMess
 
   const invitations: InvitationInput[] = [];
 
-  users.forEach(async (userId) => {
+  for (const userId of usersIds) {
     const user = await userService.getUserById(parseInt(userId));
     if (!user) {
       throw new exceptions.ElementNotFoundException(`User with id ${userId} not found`);
@@ -26,7 +26,7 @@ export const inviteUsers = async (projectId: number, users: string[], customMess
       status: 'pending',
     };
     invitations.push(invitation);
-  });
+  }
 
   return await invitationRepository.inviteUsers(invitations);
 };
@@ -35,6 +35,13 @@ export const acceptInvitation = async (invitationId: number) => {
   const invitation = await getInvitation(invitationId);
   if (!invitation) {
     throw new exceptions.ElementNotFoundException(`Invitation with id ${invitationId} not found`);
+  }
+
+  const existsPendingInvitation = await existsInvitationByStatus(invitationId, 'pending');
+  if (!existsPendingInvitation) {
+    throw new exceptions.ElementAlreadyExists(
+      `Invitation for user with id ${invitation.invitedUserId} already answered`,
+    );
   }
 
   return await invitationRepository.acceptInvitation(invitationId);
@@ -46,6 +53,13 @@ export const rejectInvitation = async (invitationId: number) => {
     throw new exceptions.ElementNotFoundException(`Invitation with id ${invitationId} not found`);
   }
 
+  const existsPendingInvitation = await existsInvitationByStatus(invitationId, 'pending');
+  if (!existsPendingInvitation) {
+    throw new exceptions.ElementAlreadyExists(
+      `Invitation for user with id ${invitation.invitedUserId} already answered`,
+    );
+  }
+
   return await invitationRepository.rejectInvitation(invitationId);
 };
 
@@ -55,10 +69,22 @@ export const removeInvitation = async (invitationId: number) => {
     throw new exceptions.ElementNotFoundException(`Invitation with id ${invitationId} not found`);
   }
 
+  const existsPendingInvitation = await existsInvitationByStatus(invitationId, 'pending');
+  if (!existsPendingInvitation) {
+    throw new exceptions.ElementAlreadyExists(
+      `Invitation for user with id ${invitation.invitedUserId} already answered`,
+    );
+  }
+
   return await invitationRepository.removeInvitation(invitationId);
 };
 
-export const getInvitation = async (invitationId: number) => {
+export const existsInvitationByStatus = async (invitationId: number, status: string): Promise<boolean> => {
+  const invitation = await invitationRepository.existsInvitationByStatus(invitationId, status);
+  return invitation;
+};
+
+export const getInvitation = async (invitationId: number): Promise<InvitationOutput> => {
   const invitation = await invitationRepository.getInvitation(invitationId);
   if (!invitation) {
     throw new exceptions.ElementNotFoundException(`Invitation with id ${invitationId} not found`);
@@ -73,8 +99,9 @@ export const getUserInvitations = async (ownerEmail: string) => {
   if (!user) {
     throw new exceptions.ElementNotFoundException(`User with email ${ownerEmail} not found`);
   }
-  
-  const invitations = await invitationRepository.getUserInvitations(user);
+  const userId = user.id;
+
+  const invitations = await invitationRepository.getUserInvitations(userId);
   return invitations;
 };
 

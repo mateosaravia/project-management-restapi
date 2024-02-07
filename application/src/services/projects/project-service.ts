@@ -69,9 +69,9 @@ export const leaveProject = async (projectId: number, userEmail: string): Promis
   return deleteResult;
 };
 
-export const removeUsers = async (projectId: number, userIds: string[]): Promise<string> => {
+export const removeUsers = async (projectId: number, usersIds: string[]): Promise<string> => {
   const users: UserOutput[] = [];
-  for (const userId of userIds) {
+  for (const userId of usersIds) {
     const user = await userService.getUserById(parseInt(userId));
     if (!user) {
       throw new exceptions.ElementNotFoundException(`User with id ${userId} not found`);
