@@ -2,8 +2,9 @@ import express from 'express';
 export const router = express.Router();
 
 import * as reviewService from '../../services/reviews/review-service';
+import { verifyToken } from '../../common/middlewares/auth-middlware';
 
-router.post('/projects/:projectId/reviews', async (req, res, next) => {
+router.post('/projects/:projectId/reviews', verifyToken, async (req, res, next) => {
   try {
     const { projectId } = req.params;
     let review = await reviewService.createReview(parseInt(projectId), req.body);
