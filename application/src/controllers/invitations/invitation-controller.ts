@@ -4,7 +4,7 @@ export const router = express.Router();
 import { CustomRequest, verifyToken } from '../../common/middlewares/auth-middlware';
 import * as invitationService from '../../services/invitations/invitation-service';
 
-router.post('/projects/:projectId/invite', verifyToken, async (req: any, res: any, next: any) => {
+router.post('/projects/:projectId/invitations', verifyToken, async (req: any, res: any, next: any) => {
   try {
     const { projectId } = req.params;
     const { users, customMessage } = req.body;
@@ -15,7 +15,7 @@ router.post('/projects/:projectId/invite', verifyToken, async (req: any, res: an
   }
 });
 
-router.post('/projects/invite/:invitationId/accept', verifyToken, async (req: any, res: any, next: any) => {
+router.post('/projects/invitations/:invitationId/accept', verifyToken, async (req: any, res: any, next: any) => {
   try {
     const { invitationId } = req.params;
     let response = await invitationService.acceptInvitation(parseInt(invitationId));
@@ -25,7 +25,7 @@ router.post('/projects/invite/:invitationId/accept', verifyToken, async (req: an
   }
 });
 
-router.post('/projects/invite/:invitationId/reject', verifyToken, async (req: any, res: any, next: any) => {
+router.post('/projects/invitations/:invitationId/reject', verifyToken, async (req: any, res: any, next: any) => {
   try {
     const { invitationId } = req.params;
     let response = await invitationService.rejectInvitation(parseInt(invitationId));
@@ -36,7 +36,7 @@ router.post('/projects/invite/:invitationId/reject', verifyToken, async (req: an
 });
 
 router.delete(
-  '/projects/invite/:invitationId/remove',
+  '/projects/invitations/:invitationId/remove',
   verifyToken,
   async (req: any, res: any, next: any) => {
     try {

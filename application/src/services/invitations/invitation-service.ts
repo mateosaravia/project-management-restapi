@@ -5,7 +5,7 @@ import * as projectService from '../projects/project-service';
 import * as userService from '../users/user-service';
 import * as invitationRepository from '../../data-access/repositories/invitations/invitation-repository';
 
-export const inviteUsers = async (projectId: number, usersIds: string[], customMessage: string): Promise<any> => {
+export const inviteUsers = async (projectId: number, usersIds: string[], customMessage: string): Promise<InvitationOutput[]> => {
   const existantProject = await projectService.existsProject(projectId);
   if (!existantProject) {
     throw new exceptions.ElementNotFoundException(`Project with id ${projectId} not found`);
@@ -31,7 +31,7 @@ export const inviteUsers = async (projectId: number, usersIds: string[], customM
   return await invitationRepository.inviteUsers(invitations);
 };
 
-export const acceptInvitation = async (invitationId: number) => {
+export const acceptInvitation = async (invitationId: number): Promise<InvitationOutput> => {
   const invitation = await getInvitation(invitationId);
   if (!invitation) {
     throw new exceptions.ElementNotFoundException(`Invitation with id ${invitationId} not found`);
@@ -47,7 +47,7 @@ export const acceptInvitation = async (invitationId: number) => {
   return await invitationRepository.acceptInvitation(invitationId);
 };
 
-export const rejectInvitation = async (invitationId: number) => {
+export const rejectInvitation = async (invitationId: number): Promise<InvitationOutput> => {
   const invitation = await getInvitation(invitationId);
   if (!invitation) {
     throw new exceptions.ElementNotFoundException(`Invitation with id ${invitationId} not found`);
@@ -63,7 +63,7 @@ export const rejectInvitation = async (invitationId: number) => {
   return await invitationRepository.rejectInvitation(invitationId);
 };
 
-export const removeInvitation = async (invitationId: number) => {
+export const removeInvitation = async (invitationId: number): Promise<string> => {
   const invitation = await getInvitation(invitationId);
   if (!invitation) {
     throw new exceptions.ElementNotFoundException(`Invitation with id ${invitationId} not found`);
@@ -93,7 +93,7 @@ export const getInvitation = async (invitationId: number): Promise<InvitationOut
   return invitation;
 };
 
-export const getUserInvitations = async (ownerEmail: string) => {
+export const getUserInvitations = async (ownerEmail: string): Promise<InvitationOutput[]> => {
   const user = await userService.getUser(ownerEmail);
 
   if (!user) {
@@ -105,7 +105,7 @@ export const getUserInvitations = async (ownerEmail: string) => {
   return invitations;
 };
 
-export const getProjectInvitations = async (projectId: number) => {
+export const getProjectInvitations = async (projectId: number): Promise<InvitationOutput[]> => {
   const existantProject = await projectService.existsProject(projectId);
   if (!existantProject) {
     throw new exceptions.ElementNotFoundException(`Project with id ${projectId} not found`);
