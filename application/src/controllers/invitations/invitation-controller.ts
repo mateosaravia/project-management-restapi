@@ -80,7 +80,6 @@ router.get(
   verifyToken,
   async (req: CustomRequest, res: Response, next: NextFunction): Promise<Response | void> => {
     try {
-      console.log('req.userEmail');
       const userEmail = req.userEmail;
       let response = await invitationService.getUserInvitations(userEmail);
       return res.status(200).send(response);
