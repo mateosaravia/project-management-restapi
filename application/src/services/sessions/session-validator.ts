@@ -1,6 +1,7 @@
 import * as stringValidator from '../../common/utils/validations/string-validator';
+import { LoginInput } from './session-service';
 
-export const validateLogin = (loginRequest: any): void => {
+export const validateLogin = (loginRequest: LoginInput): void => {
   validateEmail(loginRequest.email);
   validatePassword(loginRequest.password);
 };

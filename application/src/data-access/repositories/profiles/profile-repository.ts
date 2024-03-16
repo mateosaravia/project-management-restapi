@@ -10,10 +10,10 @@ export const createProfile = async (profile: ProfileInput): Promise<ProfileOutpu
   }
 };
 
-export const updateProfile = async (userId: number, updatedProfile: ProfileInput): Promise<any> => {
+export const updateProfile = async (userId: number, updatedProfile: ProfileInput): Promise<ProfileOutput> => {
   try {
     await Profile.update(updatedProfile, { where: { userId } });
-    return await Profile.findOne({where: { userId }});
+    return await Profile.findOne({ where: { userId } });
   } catch (error: any) {
     throw new DatabaseException(error.message);
   }
