@@ -5,7 +5,12 @@ import { comparePassword } from '../../common/utils/hasher/hasher';
 import * as userService from '../users/user-service';
 import * as tokenService from '../tokens/token-service';
 
-export const loginUser = async (loginInfo: any): Promise<{}> => {
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export const loginUser = async (loginInfo: LoginInput): Promise<{ token: string }> => {
   validateLogin(loginInfo);
 
   let user = await userService.getUser(loginInfo.email);

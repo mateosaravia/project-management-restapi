@@ -1,7 +1,6 @@
 import { DatabaseException } from '../../../common/exceptions/exceptions';
 import { Invitation, InvitationInput, InvitationOutput } from '../../models/invitations/invitation-model';
 import { ProjectUser } from '../../models/projects/project-user-model';
-import { UserOutput } from '../../models/users/user-model';
 
 export const inviteUsers = async (invitations: InvitationInput[]): Promise<InvitationOutput[]> => {
   try {

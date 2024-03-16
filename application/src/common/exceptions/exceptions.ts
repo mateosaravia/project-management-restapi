@@ -1,3 +1,5 @@
+import { Response } from 'express';
+
 export const HttpErrorCodes = {
   HTTP_OK: 200,
   HTTP_CREATED: 201,
@@ -6,7 +8,7 @@ export const HttpErrorCodes = {
   ERROR_FORBIDDEN: 403,
   ERROR_NOT_FOUND: 404,
   ERROR_CONFLICT: 409,
-  ERROR_SERVER_ERROR: 500, 
+  ERROR_SERVER_ERROR: 500,
 };
 
 export class DatabaseException extends Error {
@@ -28,16 +30,15 @@ export class ElementNotFoundException extends Error {
 }
 
 export class ElementInvalidException extends Error {
- constructor(message: string) {
-   super(message);
- }
+  constructor(message: string) {
+    super(message);
+  }
 }
 
-
 export class InvalidCredentials extends Error {
- constructor(message: string) {
-   super(message);
- }
+  constructor(message: string) {
+    super(message);
+  }
 }
 
 export class ElementAlreadyExists extends Error {
@@ -46,7 +47,7 @@ export class ElementAlreadyExists extends Error {
   }
 }
 
-export const evalException = (err: Error, res: any) => {
+export const evalException = (err: Error, res: Response) => {
   if (err instanceof ElementInvalidException) {
     return res.status(HttpErrorCodes.ERROR_BAD_REQUEST).send(err.message);
   } else if (err instanceof InvalidCredentials) {
