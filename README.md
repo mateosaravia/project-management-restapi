@@ -6,7 +6,7 @@ The main goal of this project is to provide a backend for a web application.
 ## Technologies
 The main technologies used in this project are:
 
-> `NodeJS` | `Express` | `TypeScript` | `MySQL` | `Redis` | `Docker` | `Docker Compose`
+> `NodeJS` | `Express` | `TypeScript` | `MySQL` | `Redis` | `Docker`
 
 ## Features
 - User management
@@ -25,7 +25,7 @@ The main technologies used in this project are:
 ### Steps
 1. Clone the repository
 
-2.  `application`
+2. Get into the `application` directory
 ```
 cd application
 ```

@@ -17,21 +17,21 @@
     * [`PATCH /users/:id/profiles`](#patch-usersidprofiles)
 * [Projects](#projects)
     * [`POST /projects`](#post-projects)
-    * [`DELETE /projects/:id`](#delete-projectsid)
-    * [`GET /projects/:id`](#get-projectsid)
+    * [`DELETE /projects/:projectId`](#delete-projectsid)
+    * [`GET /projects/:projectId`](#get-projectsid)
     * [`GET /projects`](#get-projects)
-    * [`PUT /projects/:id`](#put-projectsid)
-    * [`POST /projects/:id/remove`](#post-projectsidremove)
-    * [`POST /projects/:id/leave`](#post-projectsidleave)
+    * [`PUT /projects/:projectId`](#put-projectsid)
+    * [`POST /projects/:projectId/remove`](#post-projectsidremove)
+    * [`POST /projects/:projectId/leave`](#post-projectsidleave)
 * [Invitations](#invitations)
-    * [`POST /projects/:id/invitations`](#post-projectsidinvitations)
+    * [`POST /projects/:projectId/invitations`](#post-projectsidinvitations)
     * [`POST /projects/invitations/:invitationId/accept`](#post-projectsinvitationsinvitationidaccept)
     * [`POST /projects/invitations/:invitationId/reject`](#post-projectsinvitationsinvitationidreject)
     * [`DELETE /projects/invitations/:invitationId/remove`](#delete-projectsinvitationsinvitationidremove)
-    * [`GET /projects/:id/invitations`](#get-projectsidinvitations)
+    * [`GET /projects/:projectId/invitations`](#get-projectsidinvitations)
     * [`GET /projects/invitations`](#get-projectsinvitations)
 * [Reviews](#reviews)
-    * [`POST /projects/:id/reviews`](#post-projectsidreviews)
+    * [`POST /projects/:projectId/reviews`](#post-projectsidreviews)
     * [`PUT /projects/:projectId/reviews/:reviewId`](#put-projectsprojectidreviewsreviewid)
     * [`DELETE /projects/:projectId/reviews/:reviewId`](#delete-projectsprojectidreviewsreviewid)
     * [`GET /projects/:projectId/reviews`](#get-projectsprojectidreviews)
@@ -224,26 +224,26 @@
 >- **201 Created**: If the project is created successfully.
 >- **400 Bad Request**: If required parameters are missing or invalid.
 
-### `DELETE /projects/:id`
+### `DELETE /projects/:projectId`
 
 >Delete a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Responses*
 >
 >- **200 Ok**: If the project is deleted successfully.
 >- **404 Not Found**: If the project is not found.
 
-### `GET /projects/:id`
+### `GET /projects/:projectId`
 
 >Get a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Responses*
 >
@@ -258,13 +258,13 @@
 >
 >- **200 Ok**: If the projects are found.
 
-### `PUT /projects/:id`
+### `PUT /projects/:projectId`
 
 >Update a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Body Parameters*
 >
@@ -282,13 +282,13 @@
 >- **404 Not Found**: If the project is not found.
 
 
-### `POST /projects/:id/remove`
+### `POST /projects/:projectId/remove`
 
 >Remove a collaborator from a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Body Parameters*
 >
@@ -300,13 +300,13 @@
 >- **400 Bad Request**: If required parameters are missing or invalid.
 >- **404 Not Found**: If the project is not found.
 
-### `POST /projects/:id/leave`
+### `POST /projects/:projectId/leave`
 
 >Leave a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Responses*
 >
@@ -315,13 +315,13 @@
 
 ## Invitations
 
-### `POST /projects/:id/invitations`
+### `POST /projects/:projectId/invitations`
 
 >Invite a users to a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Body Parameters*
 >
@@ -373,13 +373,13 @@
 >- **200 Ok**: If the invitation is removed successfully.
 >- **404 Not Found**: If the invitation is not found.
 
-### `GET /projects/:id/invitations`
+### `GET /projects/:projectId/invitations`
 
 >Get the invitations of a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Responses*
 >
@@ -396,13 +396,13 @@
 
 ## Reviews
 
-### `POST /projects/:id/reviews`
+### `POST /projects/:projectId/reviews`
 
 >Create a new review for a project.
 >
 >#### *Path Parameters*
 >
->- `id` (number, required): The id of the project.
+>- `projectId` (number, required): The id of the project.
 >
 >#### *Body Parameters*
 >
